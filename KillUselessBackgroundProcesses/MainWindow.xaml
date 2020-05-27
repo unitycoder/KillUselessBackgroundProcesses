@@ -1,0 +1,15 @@
+﻿<Window x:Class="KillUselessBackgroundProcesses.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KillUselessBackgroundProcesses"
+        mc:Ignorable="d"
+        Title="KillUselessBackgroundProcesses" Height="450" Width="800" Background="#FF1D1D1D">
+	<Grid>
+		<DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="381" Margin="10,17,0,0" VerticalAlignment="Top" Width="620"/>
+		<Button x:Name="btnScan" Content="Scan" HorizontalAlignment="Left" Margin="642,17,0,0" VerticalAlignment="Top" Width="140" Height="47" Click="BtnScan_Click"/>
+		<Button x:Name="btnKill" Content="Kill" HorizontalAlignment="Left" Margin="642,82,0,0" VerticalAlignment="Top" Width="140" Height="47"/>
+
+	</Grid>
+</Window>
