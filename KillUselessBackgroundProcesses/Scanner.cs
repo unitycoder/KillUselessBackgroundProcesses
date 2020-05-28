@@ -26,8 +26,8 @@ namespace KillUselessBackgroundProcesses
                 var p = new ProcessData();
                 p.process = localProcesses[i];
 
-                p.name = localProcesses[i].ProcessName;
-                p.fileName = localProcesses[i].GetMainModuleFileName();
+                p.Name = localProcesses[i].ProcessName;
+                p.FileName = localProcesses[i].GetMainModuleFileName();
 
                 res.Add(p);
             }

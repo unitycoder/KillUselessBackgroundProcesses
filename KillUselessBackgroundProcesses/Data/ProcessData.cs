@@ -3,6 +3,6 @@
 public struct ProcessData
 {
     public Process process;
-    public string name { get; set; }
-    public string fileName { get; set; }
+    public string Name { get; set; }
+    public string FileName { get; set; }
 }
