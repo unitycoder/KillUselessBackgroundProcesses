@@ -23,11 +23,18 @@ namespace KillUselessBackgroundProcesses
         public MainWindow()
         {
             InitializeComponent();
+            Start();
+        }
+
+        void Start()
+        {
         }
 
         private void BtnScan_Click(object sender, RoutedEventArgs e)
         {
-            Scanner.Scan();
+            var list = Scanner.Scan();
+            processGrid.ItemsSource = list;
+
         }
     }
 }

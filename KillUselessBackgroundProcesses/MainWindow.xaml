@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KillUselessBackgroundProcesses"
         mc:Ignorable="d"
-        Title="KillUselessBackgroundProcesses" Height="450" Width="800" Background="#FF1D1D1D">
+        Title="KillUselessBackgroundProcesses" Height="583.333" Width="825.316" Background="#FF1D1D1D">
 	<Grid>
-		<DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="381" Margin="10,17,0,0" VerticalAlignment="Top" Width="620"/>
-		<Button x:Name="btnScan" Content="Scan" HorizontalAlignment="Left" Margin="642,17,0,0" VerticalAlignment="Top" Width="140" Height="47" Click="BtnScan_Click"/>
-		<Button x:Name="btnKill" Content="Kill" HorizontalAlignment="Left" Margin="642,82,0,0" VerticalAlignment="Top" Width="140" Height="47"/>
+		<DataGrid x:Name="processGrid" HorizontalAlignment="Left" Height="485" Margin="10,57,0,0" VerticalAlignment="Top" Width="797"/>
+		<Button x:Name="btnScan" Content="Scan" HorizontalAlignment="Left" Margin="667,5,0,0" VerticalAlignment="Top" Width="140" Height="47" Click="BtnScan_Click"/>
+		<Button x:Name="btnKill" Content="Kill" HorizontalAlignment="Left" Margin="522,5,0,0" VerticalAlignment="Top" Width="140" Height="47" IsEnabled="False"/>
 
 	</Grid>
 </Window>
