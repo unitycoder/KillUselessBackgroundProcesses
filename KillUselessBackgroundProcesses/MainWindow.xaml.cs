@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -37,6 +40,23 @@ namespace KillUselessBackgroundProcesses
             Resizable_BorderLess_Chrome.CornerRadius = new CornerRadius(0);
             Resizable_BorderLess_Chrome.CaptionHeight = 1.0;
             WindowChrome.SetWindowChrome(this, Resizable_BorderLess_Chrome);
+
+            var url = "https://gist.githubusercontent.com/unitycoder/0a9fd6eb6252148208f4abed56c93235/raw/37947f69b3f360b655a29d70ca9f5bf29604e441/UnwantedProcessTempTest.json";
+            LoadJSON(url);
+
+        }
+
+        void LoadJSON(string url)
+        {
+            string json = new WebClient().DownloadString(url);
+            var apps = JsonConvert.DeserializeObject<List<TestTest>>(json);
+
+            for (int i = 0; i < apps.Count; i++)
+            {
+                Console.WriteLine(apps[i].Name);
+            }
+
+
         }
 
         private void BtnScan_Click(object sender, RoutedEventArgs e)
@@ -74,4 +94,7 @@ namespace KillUselessBackgroundProcesses
         }
 
     }
+
+
+
 }
