@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -72,13 +68,6 @@ namespace KillUselessBackgroundProcesses
             }
         }
 
-
-
-
-
-
-
-
         // creates list of unwanted processes (based on scanning list)
         public static List<ProcessData> Scan()
         {
@@ -101,7 +90,7 @@ namespace KillUselessBackgroundProcesses
                     //Console.WriteLine(p.process);
                     var procname = p.process.GetMainModuleFileName();
 
-                    Console.WriteLine("name: "+procname);
+                    //Console.WriteLine("name: "+procname);
                     if (procname != null)
                     {
                         p.Icon = ImageSourceFromBitmap(Icon.ExtractAssociatedIcon(procname).ToBitmap());
@@ -138,7 +127,6 @@ namespace KillUselessBackgroundProcesses
             return res;
         }
 
-        //If you get 'dllimport unknown'-, then add 'using System.Runtime.InteropServices;'
         [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DeleteObject([In] IntPtr hObject);

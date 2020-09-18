@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Drawing;
-using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace KillUselessBackgroundProcesses
 {
-
+    [JsonObject(MemberSerialization.OptIn)]
     public class ProcessData
     {
         public Process process;
+        public bool Selected { get; set; }
         public ImageSource Icon { get; set; }
+        [JsonProperty]
         public string Name { get; set; }
+        [JsonProperty]
         public string FileName { get; set; }
     }
 }

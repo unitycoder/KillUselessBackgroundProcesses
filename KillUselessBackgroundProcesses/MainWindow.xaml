@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:KillUselessBackgroundProcesses"
 		xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="KillUselessBackgroundProcesses" Height="583.333" Width="825.316" WindowStartupLocation="CenterScreen" Background="{DynamicResource DarkestBackground}" MinWidth="600" MinHeight="650" AllowsTransparency="True" WindowStyle="None" Margin="0">
+        Title="KillUselessBackgroundProcesses" Height="583.333" Width="825.316" WindowStartupLocation="CenterScreen" Background="{DynamicResource DarkestBackground}" MinWidth="600" MinHeight="650" AllowsTransparency="True" WindowStyle="None" Margin="0" Closing="Window_Closing">
 
 	<Window.Resources>
 
@@ -220,9 +220,18 @@
 			</Button>
 		</Grid>
 
-		<DataGrid Grid.Row="1" x:Name="gridProcess" HorizontalAlignment="Left" Height="582" Margin="10,10,0,0" VerticalAlignment="Top" Width="805" SelectionMode="Single" CanUserAddRows="False" Background="{x:Null}" BorderBrush="{x:Null}" ColumnHeaderStyle="{StaticResource HeaderStyle}" Padding="0" HorizontalScrollBarVisibility="Disabled" HeadersVisibility="Column" Foreground="#FFD8D8D8" HorizontalGridLinesBrush="#4C000000" VerticalGridLinesBrush="#19000000" AutoGenerateColumns="False" >
+		<DataGrid Grid.Row="1" x:Name="gridProcess" HorizontalAlignment="Left" Height="582" Margin="10,0,0,0" VerticalAlignment="Top" Width="805" SelectionMode="Single" CanUserAddRows="False" Background="{x:Null}" BorderBrush="{x:Null}" ColumnHeaderStyle="{StaticResource HeaderStyle}" Padding="0" HorizontalScrollBarVisibility="Disabled" HeadersVisibility="Column" Foreground="#FFD8D8D8" HorizontalGridLinesBrush="#4C000000" VerticalGridLinesBrush="#19000000" AutoGenerateColumns="False" PreviewKeyDown="GridProcess_PreviewKeyDown" >
 			<DataGrid.Columns>
-				<DataGridTemplateColumn Width="80" Header="Icon">
+				<!--<DataGridTextColumn Binding="{Binding Selected}" ClipboardContentBinding="{x:Null}" Header="Selected" IsReadOnly="True" Width="75"/>-->
+				<DataGridTemplateColumn Header="Selected" Width="75">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<CheckBox IsChecked="{Binding Path=Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn Width="64" Header="Icon">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<Image Source="{Binding Icon}" MaxWidth="32" MaxHeight="32" RenderOptions.BitmapScalingMode="NearestNeighbor" UseLayoutRounding="True" SnapsToDevicePixels="True" />
@@ -230,13 +239,13 @@
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
 				<!--<DataGridTextColumn Binding="{Binding Icon}" ClipboardContentBinding="{x:Null}" Header="Icon" IsReadOnly="True" Width="250"/>-->
-				<DataGridTextColumn Binding="{Binding Name}" ClipboardContentBinding="{x:Null}" Header="Name" IsReadOnly="True" Width="250"/>
-				<DataGridTextColumn Binding="{Binding FileName}" ClipboardContentBinding="{x:Null}" Header="File" IsReadOnly="True" Width="250"/>
+				<DataGridTextColumn Binding="{Binding Name}" ClipboardContentBinding="{x:Null}" Header="Name" IsReadOnly="True" Width="275"/>
+				<DataGridTextColumn Binding="{Binding FileName}" ClipboardContentBinding="{x:Null}" Header="File" IsReadOnly="True" Width="150"/>
 			</DataGrid.Columns>
 		</DataGrid>
 
 
-		<Grid Grid.Row="2" VerticalAlignment="Bottom" Margin="4,0,8,5">
+		<Grid Grid.Row="2" VerticalAlignment="Bottom" Margin="4,0,8,0">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="*" />
@@ -245,8 +254,8 @@
 				<RowDefinition Height="40" />
 			</Grid.RowDefinitions>
 
-			<Button Grid.Column="0" x:Name="btnKill" Content="Kill" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="140" Height="47" IsEnabled="False"/>
-			<Button Grid.Column="1" x:Name="btnScan" Content="Scan" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Height="47" Click="BtnScan_Click"/>
+			<Button Grid.Column="0" x:Name="btnKill" Content="Kill Selected Processes" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Width="221" Height="40" Margin="0" Click="BtnKill_Click"/>
+			<Button Grid.Column="1" x:Name="btnScan" Content="Scan" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="140" Height="40" Click="BtnScan_Click"/>
 		</Grid>
 
 	</Grid>
