@@ -11,13 +11,15 @@ namespace KillUselessBackgroundProcesses
 {
     public partial class MainWindow : Window
     {
-        List<ProcessData> processDataSource;
-        List<ProcessData> loadedAppsList;
-        Dictionary<string, ProcessData> unwantedApps = new Dictionary<string, ProcessData>();
+        List<ProcessData> currentProcesses;
+        List<ProcessData> unwantedAppsLoadedList;
+        Dictionary<string, ProcessData> unwantedAppsLoaded = new Dictionary<string, ProcessData>();
 
         static readonly string settingsFile = "unwanted.json";
         static readonly string rootFolder = AppDomain.CurrentDomain.BaseDirectory;
         static readonly string unwantedFile = Path.Combine(rootFolder, settingsFile);
+
+        bool autoScanAtStart = true;
 
         public MainWindow()
         {
@@ -38,7 +40,9 @@ namespace KillUselessBackgroundProcesses
 
             //var url = "https://gist.githubusercontent.com/unitycoder/0a9fd6eb6252148208f4abed56c93235/raw/37947f69b3f360b655a29d70ca9f5bf29604e441/UnwantedProcessTempTest.json";
             //LoadJSON(url);
+
             LoadUnwantedList();
+            if (autoScanAtStart == true) Scan();
         }
 
         private void LoadUnwantedList()
@@ -46,15 +50,14 @@ namespace KillUselessBackgroundProcesses
             if (File.Exists(unwantedFile) == true)
             {
                 var json = File.ReadAllText(unwantedFile);
-                //var apps = JsonConvert.DeserializeObject<Dictionary<string, ProcessData>>(json);
-                loadedAppsList = JsonConvert.DeserializeObject<List<ProcessData>>(json);
+                unwantedAppsLoadedList = JsonConvert.DeserializeObject<List<ProcessData>>(json);
 
-                //// put into dictionary
-                for (int i = 0; i < loadedAppsList.Count; i++)
+                // put into dictionary
+                for (int i = 0; i < unwantedAppsLoadedList.Count; i++)
                 {
-                    Console.WriteLine(loadedAppsList[i].Name);
+                    Console.WriteLine(unwantedAppsLoadedList[i].Name);
                     // uses exe path for now.. NOTE its different for each computer..
-                    unwantedApps.Add(loadedAppsList[i].FileName, loadedAppsList[i]);
+                    unwantedAppsLoaded.Add(unwantedAppsLoadedList[i].FileName, unwantedAppsLoadedList[i]);
                 }
             }
             else
@@ -76,19 +79,23 @@ namespace KillUselessBackgroundProcesses
 
         private void BtnScan_Click(object sender, RoutedEventArgs e)
         {
-            processDataSource = Scanner.Scan();
+            Scan();
+        }
+
+        private void Scan()
+        {
+            currentProcesses = Scanner.Scan();
 
             // enable objects that are in unwanted list
-            for (int i = 0; i < processDataSource.Count; i++)
+            for (int i = 0; i < currentProcesses.Count; i++)
             {
-                if (processDataSource[i].FileName != null && unwantedApps.ContainsKey(processDataSource[i].FileName) == true)
+                if (currentProcesses[i].FileName != null && unwantedAppsLoaded.ContainsKey(currentProcesses[i].FileName) == true)
                 {
-                    processDataSource[i].Selected = true;
+                    currentProcesses[i].Selected = true;
                 }
             }
 
-            gridProcess.ItemsSource = processDataSource;
-
+            gridProcess.ItemsSource = currentProcesses;
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
@@ -122,7 +129,7 @@ namespace KillUselessBackgroundProcesses
             {
                 case Key.Space: // toggle select for this item
                     var row = gridProcess.SelectedIndex;
-                    processDataSource[row].Selected = !processDataSource[row].Selected;
+                    currentProcesses[row].Selected = !currentProcesses[row].Selected;
                     gridProcess.Items.Refresh();
                     // fix row selection?
                     SetFocusToGrid(gridProcess, row);
@@ -163,57 +170,70 @@ namespace KillUselessBackgroundProcesses
 
         private void SaveSettings()
         {
-            if (processDataSource == null) return;
+            if (currentProcesses == null) return;
 
-            // TODO how to remove items from unwanted list? i guess user can remove, if the exe is running and listed, can deselect..
-
-            //var newList = new List<string>();
-            var newList = new List<ProcessData>();
-            // add existing items first
-            if (loadedAppsList != null) newList.AddRange(loadedAppsList);
-
-            // TODO if failed to load appslist, dont overwrite with empty list..
-
-            // add selected items to unwanted list, unless they are already there
-            for (int i = 0; i < processDataSource.Count; i++)
+            for (int i = 0; i < currentProcesses.Count; i++)
             {
-                // check if already in list or later use dictionary
-                if (processDataSource[i].Selected == true)
+                if (currentProcesses[i].FileName == null) continue; // NOTE for now cannot process if no filename available
+
+                // if selected and not in the list already, then add
+                if (currentProcesses[i].Selected == true)
                 {
-                    if (unwantedApps.ContainsKey(processDataSource[i]?.FileName) == false)
+                    if (unwantedAppsLoaded.ContainsKey(currentProcesses[i].FileName) == false)
                     {
-                        newList.Add(processDataSource[i]);
+                        unwantedAppsLoaded.Add(currentProcesses[i].FileName, currentProcesses[i]);
+                    }
+                }
+                else
+                {
+                    // not selected, check if was in the list previously, then remove from list
+                    if (unwantedAppsLoaded.ContainsKey(currentProcesses[i].FileName) == true)
+                    {
+                        var b = unwantedAppsLoaded.Remove(currentProcesses[i].FileName);
                     }
                 }
             }
 
-            //var json = JsonConvert.SerializeObject(unwantedApps, Formatting.Indented);
-            var json = JsonConvert.SerializeObject(newList, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(unwantedAppsLoaded.Values, Formatting.Indented);
             //Console.WriteLine(json);
-
+            Console.WriteLine("Saving settings..");
             File.WriteAllText(unwantedFile, json);
         }
 
         private void BtnKill_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < processDataSource.Count; i++)
+            SaveSettings();
+
+            for (int i = currentProcesses.Count - 1; i >= 0; i--)
             {
-                // check if already in list or later use dictionary
-                if (processDataSource[i].Selected == true)
+                // TODO show progress, count killed exes
+                if (currentProcesses[i].Selected == true)
                 {
-                    Console.WriteLine("Killing " + processDataSource[i].Name);
-                    try
+                    Console.WriteLine("Killing " + currentProcesses[i].Name + " " + currentProcesses[i].FileName);
+                    if (currentProcesses[i].process != null && currentProcesses[i].process.HasExited == false)
                     {
-                        processDataSource[i].process.Kill();
-                        processDataSource.RemoveAt(i);
+                        try
+                        {
+                            currentProcesses[i].process.Kill();
+                            currentProcesses[i].process.WaitForExit(); // needed if same exe is killed twice(?)
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
-                    catch (Exception)
-                    {
-                    }
-                    // TODO scan again or refresh?
-                    gridProcess.Items.Refresh();
+                    currentProcesses.RemoveAt(i);
                 }
             }
+            gridProcess.Items.Refresh();
+            // TODO show stats
+        }
+
+        private void MenuSearchOnline_Click(object sender, RoutedEventArgs e)
+        {
+            var row = gridProcess.SelectedIndex;
+            var exe = Path.GetFileName(currentProcesses[row].FileName);
+            Console.WriteLine("search online: " + exe);
+            Tools.Tools.SearchOnline(exe);
         }
     } // class
 } // namespace

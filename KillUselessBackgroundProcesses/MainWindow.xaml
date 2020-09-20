@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:KillUselessBackgroundProcesses"
 		xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="KillUselessBackgroundProcesses" Height="583.333" Width="825.316" WindowStartupLocation="CenterScreen" Background="{DynamicResource DarkestBackground}" MinWidth="600" MinHeight="650" AllowsTransparency="True" WindowStyle="None" Margin="0" Closing="Window_Closing">
+        Title="KillUselessBackgroundProcesses" Height="583.333" Width="825.316" WindowStartupLocation="CenterScreen" Background="{DynamicResource DarkestBackground}" MinWidth="600" MinHeight="650" AllowsTransparency="True" WindowStyle="None" Margin="0" Closing="Window_Closing" Icon="Icons/favicon.ico">
 
 	<Window.Resources>
 
@@ -208,7 +208,7 @@
 		<!-- menubar -->
 		<Grid Grid.Row="0" UseLayoutRounding="False">
 			<Rectangle Fill="{DynamicResource DarkMenuBar}" MouseDown="OnRectangleMouseDown" />
-			<!--<Image Source="Images/icon.png" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" Width="16" Height="16" Margin="4,0,0,0" SnapsToDevicePixels="True" UseLayoutRounding="True" />-->
+			<Image Source="Icons/favicon.ico" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" Width="16" Height="16" Margin="4,0,0,0" SnapsToDevicePixels="True" UseLayoutRounding="True" />
 			<Label Content="KillUselessBackgroundProcesses" IsHitTestVisible="False" Margin="19,0,0,-5"  Foreground="#FFB8B8B8" FontSize="12" HorizontalAlignment="Left"  />
 			<!-- minimize -->
 			<Button x:Name="btnMinimize" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Right" VerticalAlignment="Top" Height="26" Width="26" Background="Transparent" Click="BtnMinimize_Click" Margin="0,0,27,0" Padding="2,0,2,8" IsTabStop="False">
@@ -242,6 +242,11 @@
 				<DataGridTextColumn Binding="{Binding Name}" ClipboardContentBinding="{x:Null}" Header="Name" IsReadOnly="True" Width="275"/>
 				<DataGridTextColumn Binding="{Binding FileName}" ClipboardContentBinding="{x:Null}" Header="File" IsReadOnly="True" Width="150"/>
 			</DataGrid.Columns>
+			<DataGrid.ContextMenu>
+				<ContextMenu>
+					<MenuItem x:Name="menuSearchOnline" Header="Search online.." Click="MenuSearchOnline_Click" />
+				</ContextMenu>
+			</DataGrid.ContextMenu>
 		</DataGrid>
 
 

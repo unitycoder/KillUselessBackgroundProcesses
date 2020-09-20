@@ -85,6 +85,9 @@ namespace KillUselessBackgroundProcesses
                 var p = new ProcessData();
                 p.process = localProcesses[i];
 
+                // TODO show memory, cpu usage info
+                //Console.WriteLine(p.process.);
+
                 try
                 {
                     //Console.WriteLine(p.process);
@@ -100,8 +103,6 @@ namespace KillUselessBackgroundProcesses
                         p.Icon = ImageSourceFromBitmap(Bitmap.FromHicon(SystemIcons.Error.Handle));
 
                     }
-                    //p.Icon = ImageSourceFromBitmap(Icon.ExtractAssociatedIcon(localProcesses[i].MainModule.FileName).ToBitmap());
-                    //var img = GetSmallWindowIcon(p.process.Handle);//.ToBitmap());
                 }
                 catch (Exception ex)
                 {
@@ -113,7 +114,6 @@ namespace KillUselessBackgroundProcesses
                     else
                     {
                         p.Icon = ImageSourceFromBitmap(Bitmap.FromHicon(SystemIcons.Error.Handle));
-                        //throw;
                     }
                 }
 
