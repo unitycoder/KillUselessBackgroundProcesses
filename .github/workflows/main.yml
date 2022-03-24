@@ -42,14 +42,21 @@ jobs:
           if exist bin\Debug rd /s /q bin\Debug \
           if exist bin\Release rd /s /q bin\Release \
           if exist bin\x64 rd /s /q bin\x64 \
-          "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe" /p:Configuration=Release \
-          dir bin\Release
+          "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe" /p:Configuration=Release
+
+      - name: Check Files
+        shell: cmd
+        run: dir bin\Release
+        
+      - name: Check Files 2
+        shell: cmd
+        run: dir obj\Release
 
       - name: Build Artifact
         #shell: cmd
         #run: call .\Build.cmd      
         shell: powershell
-        run: Compress-7Zip "Bin\Release" -ArchiveFileName "KillUselessBackgroundProcessesX64.zip" -Format Zip
+        run: Compress-7Zip "bin\Release" -ArchiveFileName "KillUselessBackgroundProcessesX64.zip" -Format Zip
 
       - name: Create Release
         id: create_release
