@@ -63,6 +63,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./KillUselessProcessesX64.ZIP
-          asset_name: KillUselessProcessesX64.ZIP
+          asset_path: ./KillUselessBackgroundProcessesX64.ZIP
+          asset_name: KillUselessBackgroundProcessesX64.ZIP
           asset_content_type: application/zip
