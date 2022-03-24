@@ -34,22 +34,23 @@ jobs:
           }
           Install-Module 7Zip4PowerShell -Force -Verbose 
       - uses: actions/checkout@v2
-      
+       
       - name: Build Binary
+        shell: cmd
+        #run: call .\ArtifactBuild.cmd
+        run: |
+          if exist bin\Debug rd /s /q bin\Debug \
+          if exist bin\Release rd /s /q bin\Release \
+          if exist bin\x64 rd /s /q bin\x64 \
+          "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe" /p:Configuration=Release \
+          
+
+      - name: Build Artifact
         #shell: cmd
         #run: call .\Build.cmd      
         shell: powershell
         run: Compress-7Zip "Bin\Release" -ArchiveFileName "KillUselessBackgroundProcessesX64.zip" -Format Zip
-        
-      - name: Build Artifact
-        shell: cmd
-        #run: call .\ArtifactBuild.cmd
-        run: |
-          if exist Debug rd /s /q Debug \
-          if exist Release rd /s /q Release \
-          if exist x64 rd /s /q x64 \
-          "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe" /p:Configuration=Release
-        
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@latest
