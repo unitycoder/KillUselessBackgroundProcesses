@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1082
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KillUselessBackgroundProcesses", "KillUselessBackgroundProcesses\KillUselessBackgroundProcesses.csproj", "{FAFAF2D9-3182-4AB6-A776-EB11F643911F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KillUselessBackgroundProcesses", "KillUselessBackgroundProcesses.csproj", "{FAFAF2D9-3182-4AB6-A776-EB11F643911F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
