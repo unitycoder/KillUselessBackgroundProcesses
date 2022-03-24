@@ -43,7 +43,7 @@ jobs:
           if exist bin\Release rd /s /q bin\Release \
           if exist bin\x64 rd /s /q bin\x64 \
           "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe" /p:Configuration=Release \
-          
+          dir bin\Release
 
       - name: Build Artifact
         #shell: cmd
