@@ -196,8 +196,9 @@ namespace KillUselessBackgroundProcesses
 
             var json = JsonConvert.SerializeObject(unwantedAppsLoaded.Values, Formatting.Indented);
             //Console.WriteLine(json);
-            Console.WriteLine("Saving settings..");
+            Console.WriteLine("Saving settings");
             File.WriteAllText(unwantedFile, json);
+            Console.WriteLine("Done");
         }
 
         private void BtnKill_Click(object sender, RoutedEventArgs e)
@@ -210,16 +211,25 @@ namespace KillUselessBackgroundProcesses
                 if (currentProcesses[i].Selected == true)
                 {
                     Console.WriteLine("Killing " + currentProcesses[i].Name + " " + currentProcesses[i].FileName);
-                    if (currentProcesses[i].process != null && currentProcesses[i].process.HasExited == false)
+                    // FIXME me win32 error, if not admin (and even still)
+                    try
                     {
-                        try
+                        if (currentProcesses[i].process != null && currentProcesses[i].process.HasExited == false)
                         {
-                            currentProcesses[i].process.Kill();
-                            currentProcesses[i].process.WaitForExit(); // needed if same exe is killed twice(?)
+                            try
+                            {
+                                currentProcesses[i].process.Kill();
+                                currentProcesses[i].process.WaitForExit(); // needed if same exe is killed twice(?)
+                            }
+                            catch (System.ComponentModel.Win32Exception)
+                            {
+                            }
                         }
-                        catch (Exception)
-                        {
-                        }
+                    }
+                    catch (System.ComponentModel.Win32Exception)
+                    {
+
+                        throw;
                     }
                     currentProcesses.RemoveAt(i);
                 }
