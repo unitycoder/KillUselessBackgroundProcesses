@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -244,6 +245,15 @@ namespace KillUselessBackgroundProcesses
             var exe = Path.GetFileName(currentProcesses[row].FileName);
             Console.WriteLine("search online: " + exe);
             Tools.Tools.SearchOnline(exe);
+        }
+
+        private void gridProcess_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var row = gridProcess.SelectedIndex;
+            if (row == -1) return;
+            var path = currentProcesses[row].FileName;
+            var dir = Path.GetDirectoryName(path);
+            Process.Start(dir);
         }
     } // class
 } // namespace

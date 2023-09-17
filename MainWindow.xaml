@@ -220,7 +220,7 @@
 			</Button>
 		</Grid>
 
-		<DataGrid Grid.Row="1" x:Name="gridProcess" HorizontalAlignment="Left" Height="582" Margin="10,0,0,0" VerticalAlignment="Top" Width="805" SelectionMode="Single" CanUserAddRows="False" Background="{x:Null}" BorderBrush="{x:Null}" ColumnHeaderStyle="{StaticResource HeaderStyle}" Padding="0" HorizontalScrollBarVisibility="Disabled" HeadersVisibility="Column" Foreground="#FFD8D8D8" HorizontalGridLinesBrush="#4C000000" VerticalGridLinesBrush="#19000000" AutoGenerateColumns="False" PreviewKeyDown="GridProcess_PreviewKeyDown" >
+		<DataGrid Grid.Row="1" x:Name="gridProcess" HorizontalAlignment="Left" Height="582" Margin="10,0,0,0" VerticalAlignment="Top" Width="805" SelectionMode="Single" CanUserAddRows="False" Background="{x:Null}" BorderBrush="{x:Null}" ColumnHeaderStyle="{StaticResource HeaderStyle}" Padding="0" HorizontalScrollBarVisibility="Disabled" HeadersVisibility="Column" Foreground="#FFD8D8D8" HorizontalGridLinesBrush="#4C000000" VerticalGridLinesBrush="#19000000" AutoGenerateColumns="False" PreviewKeyDown="GridProcess_PreviewKeyDown" MouseDoubleClick="gridProcess_MouseDoubleClick" >
 			<DataGrid.Columns>
 				<!--<DataGridTextColumn Binding="{Binding Selected}" ClipboardContentBinding="{x:Null}" Header="Selected" IsReadOnly="True" Width="75"/>-->
 				<DataGridTemplateColumn Header="Selected" Width="75">
@@ -240,8 +240,9 @@
 				</DataGridTemplateColumn>
 				<!--<DataGridTextColumn Binding="{Binding Icon}" ClipboardContentBinding="{x:Null}" Header="Icon" IsReadOnly="True" Width="250"/>-->
 				<DataGridTextColumn Binding="{Binding Name}" ClipboardContentBinding="{x:Null}" Header="Name" IsReadOnly="True" Width="275"/>
-				<DataGridTextColumn Binding="{Binding FileName}" ClipboardContentBinding="{x:Null}" Header="File" IsReadOnly="True" Width="150"/>
+				<DataGridTextColumn Binding="{Binding FileName}" ClipboardContentBinding="{x:Null}" Header="File" IsReadOnly="True" Width="150*"/>
 			</DataGrid.Columns>
+            
 			<DataGrid.ContextMenu>
 				<ContextMenu>
 					<MenuItem x:Name="menuSearchOnline" Header="Search online.." Click="MenuSearchOnline_Click" />
